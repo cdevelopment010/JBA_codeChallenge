@@ -13,7 +13,7 @@
 
 
 ## improvements
-# - for loop is very slow, and I don't like looping for a number of years. It would be better to loop until the next Grid-ref
+# - for loop is extremely(!) slow, and I don't like looping for a number of years. It would be better to loop until the next Grid-ref
 # - Obviously password in file isn't great!
 
 
@@ -41,8 +41,12 @@ df <- data.frame(matrix(ncol = 4, nrow = 0))
 cols <- c("xref", "yref", "date", "value")
 colnames(df) <- cols
 
+#progress bar
+pb = txtProgressBar(min = 0, max = nrow(data), initial = 0) 
+
 # populate df
 for (i in 1:nrow(data)){
+  setTxtProgressBar(pb,i)
   if (substr(data[i,1], 1, 8) == 'Grid-ref'){
     xref <- scan(text = as.character(data[i,1]), what="=", quiet = TRUE)[2]
     yref <- as.character(data[i,2])
@@ -62,7 +66,7 @@ for (i in 1:nrow(data)){
     }
   }
 }
-
+close(pb)
 
 
 ##### MySQL DB connection #####
